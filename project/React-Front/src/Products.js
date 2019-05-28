@@ -10,7 +10,7 @@ class Products extends Component
     }
 
     componentDidMount() {
-        var url = "http://localhost:9090/products"
+        var url = "http://localhost:9000/products"
         fetch(url, {
             mode: 'cors',
             headers:{

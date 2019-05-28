@@ -6,7 +6,7 @@
 GET     /                           controllers.ProductController.index
 POST    /addproduct                 controllers.ProductController.addProduct
 GET     /products                   controllers.ProductController.getProducts
-GET     /category/:id                 controllers.ProductController.getByCategory(id: Integer)
+GET     /category/:id               controllers.ProductController.getByCategory(id: Integer)
 GET     /categories                 controllers.ProductController.getByCategories
 POST    /handlepost                 controllers.ProductController.handlePost
 # Map static resources from the /public folder to the /assets URL path
