@@ -23,8 +23,11 @@ class ProductController @Inject()(productsRepo: ProductRepository, categoryRepo:
   val productForm: Form[CreateProductForm] = Form {
     mapping(
       "name" -> nonEmptyText,
-      "description" -> nonEmptyText,
-      "category" -> number,
+      "category" -> nonEmptyText,
+      "quantity" -> number,
+      "price" -> number,
+      "imageFilename" -> nonEmptyText,
+      "descriptionFilename" -> nonEmptyText,
     )(CreateProductForm.apply)(CreateProductForm.unapply)
   }
 
@@ -71,8 +74,8 @@ class ProductController @Inject()(productsRepo: ProductRepository, categoryRepo:
           )
       },
       // There were no errors in the from, so create the person.
-      product => {
-        productsRepo.create(product.name, product.description, product.category).map { _ =>
+      success = product => {
+        productsRepo.create(product.name, product.category, product.quantity, product.price, product.imageFilename, product.descriptionFilename).map { _ =>
           // If successful, we simply redirect to the index page.
           Redirect(routes.ProductController.index).flashing("success" -> "product.created")
         }
@@ -106,9 +109,9 @@ class ProductController @Inject()(productsRepo: ProductRepository, categoryRepo:
 
   def handlePost = Action.async { implicit request =>
     val name = request.body.asJson.get("name").as[String]
-    val desc = request.body.asJson.get("description").as[String]
+    val category = request.body.asJson.get("description").as[String]
 
-    productsRepo.create(name,desc,1).map { product =>
+    productsRepo.create(name,category,1,12,"/","/").map { product =>
       Ok(Json.toJson(product))
     }
   }
@@ -124,4 +127,4 @@ class ProductController @Inject()(productsRepo: ProductRepository, categoryRepo:
  * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
  * that is generated once it's created.
  */
-case class CreateProductForm(name: String, description: String, category: Int)
+case class CreateProductForm(name: String, category: String, quantity: Int, price: Int, imageFilename: String, descriptionFilename: String)
